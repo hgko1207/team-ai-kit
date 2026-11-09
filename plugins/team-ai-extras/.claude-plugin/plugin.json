@@ -1,0 +1,7 @@
+{
+  "name": "team-ai-extras",
+  "version": "0.3.0",
+  "description": "필요할 때 켜는 선택 기능: 이슈 수정·리팩터링 절차, PR 만들기, 문서 맞추기, 반증 검증 에이전트",
+  "author": { "name": "규니" },
+  "keywords": ["team", "refactor", "pull-request", "docs", "verification"]
+}
