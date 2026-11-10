@@ -96,6 +96,13 @@ claude plugin validate ./plugins/team-ai-extras
 
 고친 뒤에는 `marketplace.json`과 각 `plugin.json`의 version, `CHANGELOG.md`를 함께 올립니다. 버전이 같으면 설치된 PC는 예전 캐시를 계속 씁니다. 차단 우회를 찾으면 `test/run-hook-tests.js`에 먼저 추가하고 고칩니다.
 
+## 함께 쓰는 도구
+
+| 이럴 때 | 저장소 |
+|---|---|
+| 플러그인 없이 파일 복사로 안전장치만 | [claude-code-starter-kit](https://github.com/hgko1207/claude-code-starter-kit) |
+| 저장소 세팅 상태를 먼저 진단하고 싶다 (설치형 앱) | [cc-checkup](https://github.com/hgko1207/cc-checkup) |
+
 ## 만든 사람
 
-[규니의 개발블로그](https://hgko-dev.tistory.com)에 써 온 Claude Code 작업 방식을 플러그인으로 묶었습니다. 플러그인 없이 파일 복사로 안전장치만 쓰고 싶으면 [claude-code-starter-kit](https://github.com/hgko1207/claude-code-starter-kit)을 보세요. MIT 라이선스입니다.
+[규니의 개발블로그](https://hgko-dev.tistory.com)에 써 온 Claude Code 작업 방식을 플러그인으로 묶었습니다. MIT 라이선스입니다.
