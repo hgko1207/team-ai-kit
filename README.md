@@ -17,6 +17,8 @@ claude plugin marketplace add hgko1207/team-ai-kit
 claude plugin install team-ai@team-ai-kit
 ```
 
+터미널에서 `claude` 명령이 없다고 나오면(VS Code 확장만 설치한 경우) Claude 대화창에 `/plugin marketplace add hgko1207/team-ai-kit`과 `/plugin install team-ai@team-ai-kit`을 입력해도 됩니다.
+
 **2. 세팅 (저장소마다 한 번)**: VS Code로 저장소 폴더를 열고, 왼쪽 **Claude 아이콘** 대화창에 입력합니다.
 
 ```
