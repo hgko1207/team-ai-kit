@@ -180,6 +180,19 @@ fs.writeFileSync(path.join(R, "CLAUDE.md"), "# t\n\n## 하지 말 것 ##\n\n- �
 out = run("reinject-rules.js", R, {}).stdout;
 check(out.includes("### [ ] 주문 취소 API") && !out.includes("끝난 일") && !out.includes("잘못된 항목"), "다음 작업 섹션의 미완료 항목만 (BOM·CRLF)");
 check(out.includes("금지 B") && !out.includes("무관"), "닫는 #·코드 펜스가 있어도 섹션 끝까지");
+// AGENTS 방식: CLAUDE.md가 @AGENTS.md를 가져오고 공통 규칙은 AGENTS.md에 있다
+const RA = makeProject({ reinjectSections: ["검증 명령", "하지 말 것"] });
+fs.writeFileSync(path.join(RA, "CLAUDE.md"), "@AGENTS.md\n\n## 작업 방식\n\n- 계획은 /team-ai:plan-feature\n");
+fs.writeFileSync(path.join(RA, "AGENTS.md"), "# t\n\n## 검증 명령\n\n1. npm test\n\n## 하지 말 것\n\n- 에이전트 금지\n\n## 용어\n\n- 무관\n");
+out = run("reinject-rules.js", RA, {}).stdout;
+check(out.includes("1. npm test") && out.includes("에이전트 금지") && !out.includes("무관"), "CLAUDE.md에 없는 섹션은 AGENTS.md에서 가져옴");
+fs.writeFileSync(path.join(RA, "CLAUDE.md"), "@AGENTS.md\n\n## 하지 말 것\n\n- 클로드 금지\n");
+out = run("reinject-rules.js", RA, {}).stdout;
+check(out.includes("클로드 금지") && !out.includes("에이전트 금지") && out.includes("1. npm test"), "같은 섹션이 둘 다 있으면 CLAUDE.md 것만");
+fs.rmSync(path.join(RA, "AGENTS.md"));
+const r0 = run("reinject-rules.js", RA, {});
+check(r0.status === 0 && r0.stdout.includes("클로드 금지") && !r0.stdout.includes("npm test"), "AGENTS.md가 없어도 정상 종료");
+fs.rmSync(RA, { recursive: true, force: true });
 
 // ---------- 포맷 ----------
 console.log("\n# 포맷");

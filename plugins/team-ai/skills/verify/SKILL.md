@@ -9,7 +9,7 @@ description: 코드를 수정한 뒤 CLAUDE.md의 검증 명령(타입체크·�
 
 ## 1. 검증 명령 실행
 
-1. CLAUDE.md의 **검증 명령** 섹션에서 명령을 찾는다. 없으면 package.json, Makefile, build.gradle, pyproject.toml 등에서 찾고, 찾은 명령을 알린다.
+1. CLAUDE.md(가져온 AGENTS.md 포함)의 **검증 명령** 섹션에서 명령을 찾는다. 없으면 package.json, Makefile, build.gradle, pyproject.toml 등에서 찾고, 찾은 명령을 알린다.
 2. 순서대로 실행한다. 앞 단계가 실패하면 원인부터 본다.
    1. 타입체크 / 컴파일
    2. 린트

@@ -20,7 +20,7 @@ AI가 쓴 코드는 사람이 쓴 코드보다 **더 그럴듯하게 틀린다.*
 
 1. 기준 브랜치: 인자가 있으면 그것, 없으면 `main`(없으면 `master`).
 2. `git fetch origin` (실패해도 계속) → `git diff --stat origin/<기준>...HEAD` → `git diff origin/<기준>...HEAD`. 원격이 없으면 로컬 `<기준>...HEAD`.
-3. CLAUDE.md의 규칙·하지 말 것, plan.md의 해당 작업 항목을 읽는다.
+3. CLAUDE.md(가져온 AGENTS.md 포함)의 규칙·하지 말 것, plan.md의 해당 작업 항목을 읽는다.
 
 ## 6단계
 

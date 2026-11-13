@@ -25,7 +25,7 @@ claude plugin install team-ai@team-ai-kit
 /team-ai:setup
 ```
 
-저장소를 읽고 CLAUDE.md, 권한, 안전장치, VS Code 설정을 만들어 줍니다. 이미 있는 파일은 덮어쓰지 않고 합칩니다. 바꿀 내용만 먼저 보려면 `/team-ai:setup --dry-run`.
+저장소를 읽고 CLAUDE.md, 권한, 안전장치, VS Code 설정을 만들어 줍니다. 이미 있는 파일은 덮어쓰지 않고 합칩니다. 바꿀 내용만 먼저 보려면 `/team-ai:setup --dry-run`. Codex 같은 다른 AI 도구도 같이 쓰면 공통 규칙을 `AGENTS.md`에 두고 CLAUDE.md가 `@AGENTS.md`로 가져오게 세팅합니다(세팅 중에 한 번 묻습니다).
 
 **3. 커밋**: 만들어진 파일을 커밋하고 push합니다. 팀이라면 이제 팀원 모두에게 적용됩니다.
 

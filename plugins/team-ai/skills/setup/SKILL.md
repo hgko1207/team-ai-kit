@@ -1,6 +1,6 @@
 ---
 name: setup
-description: 이 저장소에 팀 표준 Claude Code 세팅을 적용한다. 스택과 명령을 감지해 CLAUDE.md·plan.md·권한·훅 설정·VS Code 설정을 만들거나 기존 파일에 병합한다. 저장소에 처음 도입할 때 한 번 실행한다.
+description: 이 저장소에 팀 표준 Claude Code 세팅을 적용한다. 스택과 명령을 감지해 CLAUDE.md(Codex 등과 같이 쓰면 AGENTS.md도)·plan.md·권한·훅 설정·VS Code 설정을 만들거나 기존 파일에 병합한다. 저장소에 처음 도입할 때 한 번 실행한다.
 disable-model-invocation: true
 argument-hint: "[--dry-run]"
 ---
@@ -19,8 +19,16 @@ argument-hint: "[--dry-run]"
 
 1. git 저장소인지, 작업 트리가 깨끗한지 확인한다. 변경이 있으면 알리고 계속할지 묻는다.
 2. 기본 브랜치(main/master)에 있으면 `chore/claude-setup` 브랜치를 만들자고 제안한다.
-3. 이미 있는 파일을 확인한다: `CLAUDE.md`, `plan.md`, `.claude/settings.json`, `.claude/team-ai.json`, `.claude/rules/`, `.vscode/settings.json`, `.gitignore`.
+3. 이미 있는 파일을 확인한다: `CLAUDE.md`, `AGENTS.md`, `plan.md`, `.claude/settings.json`, `.claude/team-ai.json`, `.claude/rules/`, `.vscode/settings.json`, `.gitignore`.
 4. `node --version`을 확인한다. Node가 없으면 훅이 실행되지 않아 **차단이 모두 꺼진다.** 보고서 맨 위에 경고로 적고, 팀원 PC에도 Node가 필요하다고 안내한다.
+5. 지침 파일 방식을 정한다 (아래 표). **AGENTS 방식**은 Claude Code와 Codex 같은 다른 AI 도구가 같은 규칙을 읽게 하는 방식이다. 공통 규칙은 `AGENTS.md`에 두고, `CLAUDE.md`는 첫 줄 `@AGENTS.md`로 그 내용을 가져온 뒤 Claude 전용 섹션만 둔다. Claude Code는 CLAUDE.md가 있으면 AGENTS.md를 따로 읽지 않으므로 이 import가 꼭 있어야 한다. CLAUDE.md에 "AGENTS.md를 보라"는 글만 쓰면 내용이 들어오지 않는다.
+
+| 지금 있는 파일 | 할 일 |
+|---|---|
+| 둘 다 없음 | "Codex 같은 다른 AI 도구도 이 저장소에서 쓰나요?" 한 번만 묻는다. 예 → AGENTS 방식, 아니오·답 없음 → 기본 방식(CLAUDE.md 하나) |
+| `CLAUDE.md`만 | 기본 방식. 묻지 않는다 |
+| `AGENTS.md`만 | AGENTS 방식을 기본으로 제안한다 (다른 도구를 이미 쓰고 있다는 신호) |
+| 둘 다 | CLAUDE.md에 `@AGENTS.md` import가 이미 있으면 AGENTS 방식. 없으면 CLAUDE.md 맨 위에 `@AGENTS.md`를 넣을지 묻는다. 넣어도 기존 내용은 옮기지 않는다. 거절하면 기본 방식 |
 
 ## 2. 스택과 명령 감지
 
@@ -33,7 +41,9 @@ argument-hint: "[--dry-run]"
 
 | 파일 | 없을 때 | 있을 때 |
 |---|---|---|
-| `CLAUDE.md` | `templates/CLAUDE.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 섹션(검증 명령, 원칙, 작업 방식, 작업 진행 방식, 하지 말 것)만 추가 |
+| `CLAUDE.md` (기본 방식) | `templates/CLAUDE.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 섹션(검증 명령, 원칙, 작업 방식, 작업 진행 방식, 하지 말 것)만 추가 |
+| `AGENTS.md` (AGENTS 방식) | `templates/agents-mode/AGENTS.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 공통 섹션(검증 명령, 원칙, 하지 말 것)만 추가 |
+| `CLAUDE.md` (AGENTS 방식) | `templates/agents-mode/CLAUDE.md`로 생성 | 첫 줄에 `@AGENTS.md`가 없으면 넣고, 빠진 Claude 전용 섹션(작업 방식, 작업 진행 방식)만 추가. 공통 섹션은 추가하지 않는다 (AGENTS.md와 중복) |
 | `plan.md` | `templates/plan.md`로 생성, "현재 상태" 채움 | 기존 내용은 그대로 둔다. `## 다음 작업 (구현 예정)`과 `## 완료` 섹션이 없으면 **반드시** 파일 끝에 추가한다 (plan-feature·verify·재주입 훅이 이 제목을 찾는다) |
 | `.claude/settings.json` | 템플릿으로 생성 | 훅이 기존 설정 파일 수정을 막는다. 병합한 전체 내용(키별 병합, `allow`·`ask`·`deny` 합집합, **기존 deny는 그대로**)을 보여 주고 사용자에게 직접 적용해 달라고 요청한다 |
 | `.claude/team-ai.json` | 템플릿으로 생성 | 위와 같이 병합 내용을 보여 주고 사용자에게 적용을 요청한다 (배열은 합집합, 값은 기존 우선) |
@@ -54,6 +64,12 @@ argument-hint: "[--dry-run]"
 - 100줄 안쪽으로 유지한다. 긴 설명은 docs/로 뺀다.
 - "생각을 깊게 하라" 같은 문장은 넣지 않는다.
 
+**AGENTS 방식일 때 추가 규칙** (위 규칙은 AGENTS.md에도 똑같이 적용)
+- 공통 규칙(구조, 명령, 검증 명령, 원칙, 코딩·커밋 규칙, 하지 말 것, 용어)은 AGENTS.md에만 쓴다. CLAUDE.md에 같은 내용을 또 쓰지 않는다.
+- AGENTS.md에는 `/team-ai:*`, 훅, Claude 권한 모드처럼 Claude Code에만 있는 이름을 쓰지 않는다. 다른 도구가 읽고 헷갈린다. 그런 내용은 CLAUDE.md에 둔다.
+- `@AGENTS.md`는 CLAUDE.md 첫 줄에, 코드 펜스·백틱·따옴표 없이 둔다. 펜스 안이나 따옴표로 감싸면 가져오지 않는다.
+- 기존 AGENTS.md에 다른 도구 전용 내용(예: Codex 승인 설정 안내)이 있어도 지우거나 옮기지 않는다. 보고서에 "다른 도구 전용으로 보이는 줄"로 알린다.
+
 **settings.json 채우기**
 - 2번에서 확인한 검증 명령을 `allow`에 추가한다. **Bash와 PowerShell 형식을 같이 넣는다.** 예: `"Bash(npm run lint *)", "PowerShell(npm run lint *)"`. Windows에서 Git Bash가 없으면 Bash 규칙이 하나도 맞지 않기 때문이다.
 - 마이그레이션·배포·장비 제어처럼 되돌리기 어려운 명령은 `ask`에 추가한다.
@@ -66,6 +82,7 @@ argument-hint: "[--dry-run]"
 - 로컬에 설치된 포매터가 있을 때만 `formatCommand`를 배열로 채운다. 예: `["npx", "--no-install", "prettier", "--write", "{file}"]`. 대상 확장자를 `formatExtensions`에 적는다. Markdown은 넣지 않는다.
 - 이 파일이 JSON 문법 오류이면 훅이 안전을 위해 모든 파일 수정과 명령을 막는다. 처음 만들 때 한 번에 올바르게 쓰고, 쓴 뒤 반드시 파싱해 본다. 만든 뒤에는 Claude가 고칠 수 없고 사람이 고친다.
 - `allowPaths`는 팀이 추가한 `protectedPaths`의 예외일 뿐이며, 기본 보호 목록은 풀 수 없다.
+- AGENTS 방식이면 `reinjectSections`에 `"검증 명령"`, `"하지 말 것"`을 넣는다. CLAUDE.md가 가져온 AGENTS.md를 대화 압축 후 다시 읽는지는 공식 문서에 없어서, 재주입 훅이 AGENTS.md에서 이 섹션을 찾아 다시 넣는다. 기본 방식이면 비워 둔다.
 
 ## 4. 스택 규칙
 
@@ -79,7 +96,7 @@ argument-hint: "[--dry-run]"
 1. 쓴 JSON 파일을 모두 파싱해 본다: `node -e "JSON.parse(require('fs').readFileSync('<파일>','utf8'))"` (`.vscode/*.json`은 주석이 있어 제외).
 2. `{{`가 남은 곳을 검색한다. 팀이 정해야 하는 값만 남기고 목록으로 보고한다.
 3. 사용자에게 Claude Code를 다시 열고 아래를 확인하라고 안내한다.
-   - `/context`에서 CLAUDE.md와 의도한 rule만 로드됐는지
+   - `/context`에서 CLAUDE.md와 의도한 rule만 로드됐는지 (AGENTS 방식이면 AGENTS.md 내용도 함께 들어왔는지)
    - `.env.test 파일을 만들고 A=1 한 줄 넣어줘`가 훅에 막히는지 (`.env`는 Claude가 규칙을 보고 먼저 거절해 훅 동작을 확인할 수 없다)
    - `/team-ai:verify`가 검증 명령을 실행하는지
 
@@ -91,6 +108,7 @@ argument-hint: "[--dry-run]"
 
 ```
 ## 감지
+- 지침 파일 방식: 기본 / AGENTS (이유: ...)
 - 스택: ...
 - 확인한 명령: ... (실행 결과)
 - 실행하지 않은 명령: ... (이유)

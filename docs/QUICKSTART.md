@@ -57,10 +57,11 @@ VS Code로 저장소 폴더를 열고(폴더 신뢰를 물으면 **신뢰**), [C
 1. `/team-ai:setup --dry-run` — 무엇을 만들고 합칠지 보고만 받는다. 파일은 바뀌지 않는다.
 2. 보고가 괜찮으면 `/team-ai:setup`.
    - 기본 브랜치에 있으면 `chore/claude-setup` 브랜치를 만들자고 한다. 따른다.
+   - CLAUDE.md도 AGENTS.md도 없으면 "Codex 같은 다른 AI 도구도 쓰나요?"를 묻는다. 예라고 하면 공통 규칙은 `AGENTS.md`에, Claude 전용 안내는 `CLAUDE.md`에 둔다(CLAUDE.md 첫 줄 `@AGENTS.md`가 AGENTS.md를 가져온다). AGENTS.md가 이미 있으면 묻지 않고 이 방식을 제안한다.
    - 타입체크·린트·테스트를 **실제로 실행**해서 확인한다. 몇 분 걸릴 수 있다.
    - **승인 창이 뜬다.** `.claude/`·`.vscode/` 아래에 새 파일을 만들 때 Claude Code가 민감 경로라며 묻는다. 내용을 보고 승인한다.
    - 이미 `.claude/settings.json`이 있으면 Claude가 직접 고치지 못한다(키트가 막는다). 합친 **전체 내용**을 보여 주니, 편집기로 `.claude/settings.json`을 열어 내용을 전부 지우고 그대로 붙여 넣은 뒤 저장한다.
-3. 보고 마지막의 "팀이 정할 것"을 확인하고, CLAUDE.md를 한 번 읽어 틀린 곳을 고친다.
+3. 보고 마지막의 "팀이 정할 것"을 확인하고, CLAUDE.md(AGENTS 방식이면 AGENTS.md)를 한 번 읽어 틀린 곳을 고친다.
 4. 세팅을 **별도 커밋**으로 정리한다: `/team-ai:commit` (예: `chore: Claude Code 팀 세팅`).
 
 ## 3. 첫 작업 한 바퀴 (10~15분)

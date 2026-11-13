@@ -1,6 +1,6 @@
 {
   "name": "team-ai",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "팀 표준 Claude Code 워크플로: 계획→구현→검증 스킬과 안전장치 훅",
   "author": { "name": "규니" },
   "keywords": ["team", "workflow", "hooks", "skills"]

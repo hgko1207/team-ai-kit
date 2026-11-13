@@ -1,5 +1,7 @@
 // SessionStart(compact): 대화 압축 후 plan.md의 남은 작업을 다시 알린다 (stdout이 컨텍스트로 들어간다)
 // 루트 CLAUDE.md는 압축 후 자동으로 다시 읽히므로, CLAUDE.md 섹션은 reinjectSections에 적은 것만 넣는다.
+// CLAUDE.md에 없는 섹션은 루트 AGENTS.md에서 찾는다 (CLAUDE.md가 @AGENTS.md로 가져오는 경우,
+// 가져온 파일을 압축 후 다시 읽는지는 공식 문서에 없다).
 const fs = require("fs");
 const path = require("path");
 const { readInput, loadConfig, projectDir } = require("./lib");
@@ -51,8 +53,9 @@ function section(md, title) {
 
 const parts = [];
 const claude = read("CLAUDE.md");
+const agents = read("AGENTS.md");
 for (const t of config.reinjectSections || []) {
-  const s = section(claude, t);
+  const s = section(claude, t) || section(agents, t);
   if (s) parts.push(s);
 }
 
@@ -74,7 +77,7 @@ if (todo.length) parts.push("## plan.md 다음 작업\n" + todo.slice(0, 5).join
 
 if (parts.length) {
   let text = "[team-ai] 대화가 압축되었습니다. 이어서 할 작업과 팀 규칙입니다.\n\n" + parts.join("\n\n");
-  if (text.length > MAX) text = text.slice(0, MAX) + "\n…(이하 plan.md·CLAUDE.md 참고)";
+  if (text.length > MAX) text = text.slice(0, MAX) + "\n…(이하 plan.md·CLAUDE.md·AGENTS.md 참고)";
   process.stdout.write(text + "\n");
 }
 process.exit(0);

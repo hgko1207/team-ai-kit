@@ -31,7 +31,7 @@ allowed-tools:
 
 ## 메시지
 
-CLAUDE.md의 커밋 규칙을 따른다. 없으면 Conventional Commits.
+CLAUDE.md(가져온 AGENTS.md 포함)의 커밋 규칙을 따른다. 없으면 Conventional Commits.
 
 ```
 <type>(<범위>): <무엇이 달라지는지, 50자 안팎>

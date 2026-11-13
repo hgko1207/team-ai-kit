@@ -1,19 +1,19 @@
 {
   "name": "team-ai-kit",
   "owner": { "name": "규니" },
-  "metadata": { "description": "팀 표준 Claude Code 세팅 키트", "version": "0.3.0" },
+  "metadata": { "description": "팀 표준 Claude Code 세팅 키트", "version": "0.4.0" },
   "plugins": [
     {
       "name": "team-ai",
       "source": "./plugins/team-ai",
       "description": "기본: 세팅(setup)·계획·검증·리뷰·커밋 스킬과 보호 경로·위험 명령 차단·자동 포맷·규칙 재주입 훅",
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "team-ai-extras",
       "source": "./plugins/team-ai-extras",
       "description": "선택: 이슈 수정·리팩터링 절차, PR 만들기, 문서 맞추기, 반증 검증 에이전트",
-      "version": "0.3.0"
+      "version": "0.4.0"
     }
   ]
 }
