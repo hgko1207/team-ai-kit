@@ -42,7 +42,7 @@ argument-hint: "[--dry-run]"
 | 파일 | 없을 때 | 있을 때 |
 |---|---|---|
 | `CLAUDE.md` (기본 방식) | `templates/CLAUDE.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 섹션(검증 명령, 원칙, 작업 방식, 작업 진행 방식, 하지 말 것)만 추가 |
-| `AGENTS.md` (AGENTS 방식) | `templates/agents-mode/AGENTS.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 공통 섹션(검증 명령, 원칙, 하지 말 것)만 추가 |
+| `AGENTS.md` (AGENTS 방식) | `templates/agents-mode/AGENTS.md`를 채워서 생성 | 기존 내용을 보존하고, 빠진 공통 섹션(검증 명령, 원칙, 하지 말 것)만 추가. 빠졌는지는 CLAUDE.md와 합쳐서 본다 (아래 추가 규칙) |
 | `CLAUDE.md` (AGENTS 방식) | `templates/agents-mode/CLAUDE.md`로 생성 | 첫 줄에 `@AGENTS.md`가 없으면 넣고, 빠진 Claude 전용 섹션(작업 방식, 작업 진행 방식)만 추가. 공통 섹션은 추가하지 않는다 (AGENTS.md와 중복) |
 | `plan.md` | `templates/plan.md`로 생성, "현재 상태" 채움 | 기존 내용은 그대로 둔다. `## 다음 작업 (구현 예정)`과 `## 완료` 섹션이 없으면 **반드시** 파일 끝에 추가한다 (plan-feature·verify·재주입 훅이 이 제목을 찾는다) |
 | `.claude/settings.json` | 템플릿으로 생성 | 훅이 기존 설정 파일 수정을 막는다. 병합한 전체 내용(키별 병합, `allow`·`ask`·`deny` 합집합, **기존 deny는 그대로**)을 보여 주고 사용자에게 직접 적용해 달라고 요청한다 |
@@ -68,6 +68,7 @@ argument-hint: "[--dry-run]"
 - 공통 규칙(구조, 명령, 검증 명령, 원칙, 코딩·커밋 규칙, 하지 말 것, 용어)은 AGENTS.md에만 쓴다. CLAUDE.md에 같은 내용을 또 쓰지 않는다.
 - AGENTS.md에는 `/team-ai:*`, 훅, Claude 권한 모드처럼 Claude Code에만 있는 이름을 쓰지 않는다. 다른 도구가 읽고 헷갈린다. 그런 내용은 CLAUDE.md에 둔다.
 - `@AGENTS.md`는 CLAUDE.md 첫 줄에, 코드 펜스·백틱·따옴표 없이 둔다. 펜스 안이나 따옴표로 감싸면 가져오지 않는다.
+- 기존 CLAUDE.md에 이미 공통 섹션(예: 검증 명령)이 있으면 AGENTS.md에 같은 제목의 섹션을 새로 만들지 않는다. import로 두 파일이 같이 읽혀 같은 섹션이 두 번 들어가고, 내용이 갈라진다. 옮기지도 않고, 보고서 "팀이 정할 것"에 "CLAUDE.md의 ○○ 섹션을 AGENTS.md로 옮기면 다른 도구도 읽는다"고 적는다.
 - 기존 AGENTS.md에 다른 도구 전용 내용(예: Codex 승인 설정 안내)이 있어도 지우거나 옮기지 않는다. 보고서에 "다른 도구 전용으로 보이는 줄"로 알린다.
 
 **settings.json 채우기**
